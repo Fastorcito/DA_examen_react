@@ -1,13 +1,12 @@
-// ProductForm.js
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const ProductForm = ({ products, onSave }) => {
     const { id } = useParams();
     const product = id ? products[id] : { name: '', price: '', stock: '', image: '' };
 
     const [formData, setFormData] = useState(product);
-
+    const navigate = useNavigate();
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -15,7 +14,10 @@ const ProductForm = ({ products, onSave }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSave({ ...formData, id: id || new Date().getTime().toString() });
+        const actualizarProducto = { ...formData, id: id || new Date().getTime().toString() };
+        onSave(actualizarProducto);
+
+        navigate('/')
     };
 
     return (
